@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/divyadrushti">
+<Realm className="org.apache.catalina.realm.JDBCRealm" connectionName="root" connectionPassword="root" connectionURL="jdbc:mysql://localhost/divyadrushti?autoReconnect=true" driverName="com.mysql.jdbc.Driver" roleNameCol="role" userCredCol="loginPassword" userNameCol="email" userRoleTable="roles" userTable="users"/>
+</Context>
