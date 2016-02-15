@@ -9,8 +9,8 @@ var ddapp = angular.module('divyadrushti', ['ngRoute']);
 ddapp.config(function ($routeProvider) {
 
     //home
-    $routeProvider.when('/home', {
-        templateUrl: 'partials/home.html'
-    })
+    $routeProvider.when('/configure', {
+        templateUrl: 'partial/configure'
+    });
 });
 

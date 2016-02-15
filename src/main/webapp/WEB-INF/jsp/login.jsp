@@ -7,34 +7,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>DivyaDrushti</title>
-
-        <!-- Bootstrap Core CSS --> 
-        <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap-theme.min.css">
-
-        <!-- jQuery -->
-        <script src="resources/js/jquery-2.2.0.min.js"></script>
-
-        <!-- Bootstrap Core JavaScript -->
-        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
-
-        <script src="resources/js/angular.min.js"></script>
-
-        <script src="resources/js/angular-route.js"></script>
+        <%@include file="bootstrap.jsp" %>
         <style>
             body{
                 background-image: url("resources/images/park.jpg");
                 background-size: cover;
             }
 
-            
             #login{
                 padding: 25px;
                 background-color: #e6e6e6;
                 border-radius: 10px;
             }
 
-            
             @media(max-width:768px){
 
                 body{
@@ -83,6 +68,5 @@
         </div>
 
     </body>
-
 
 </html>

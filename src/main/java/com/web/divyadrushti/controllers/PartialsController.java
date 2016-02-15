@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.web.divyadrushti;
+package com.web.divyadrushti.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,18 +16,19 @@ import org.springframework.web.servlet.ModelAndView;
  * @author smahapat
  */
 @Controller
-public class LoginController extends BaseController {
+public class PartialsController extends BaseController {
 
     
     /**
     * Simply selects the home view to render by returning its name.
-     * @param mav
+     * @param view
      * @return 
     */
-   @RequestMapping(value = "/login", method = RequestMethod.GET)
-   public ModelAndView login(ModelAndView mav) {
+   @RequestMapping(value = "/partial/{view}", method = RequestMethod.GET)
+   public ModelAndView login(@PathVariable(value = "view") String view) {
        
-       mav.setViewName("login");
+       ModelAndView mav = new ModelAndView();
+       mav.setViewName("partials/" + view);
        return mav;
    }
 }
