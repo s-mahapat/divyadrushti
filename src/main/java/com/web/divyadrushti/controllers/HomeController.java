@@ -5,10 +5,12 @@
  */
 package com.web.divyadrushti.controllers;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 
 /**
  *
@@ -20,12 +22,15 @@ public class HomeController extends BaseController {
     
     /**
     * Simply selects the home view to render by returning its name.
+     * @param request
      * @param mav
      * @return 
     */
-   @RequestMapping(value = "/", method = RequestMethod.GET)
-   public ModelAndView login(ModelAndView mav) {
+   @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
+   public ModelAndView login(HttpServletRequest request, ModelAndView mav) {
        
+       String name = request.getUserPrincipal().getName();
+       mav.addObject("username", name);
        mav.setViewName("home");
        return mav;
    }

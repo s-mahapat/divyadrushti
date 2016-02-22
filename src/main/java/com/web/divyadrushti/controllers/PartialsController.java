@@ -24,7 +24,7 @@ public class PartialsController extends BaseController {
      * @param view
      * @return 
     */
-   @RequestMapping(value = "/partial/{view}", method = RequestMethod.GET)
+   @RequestMapping(value = "/partials/{view}", method = RequestMethod.GET)
    public ModelAndView login(@PathVariable(value = "view") String view) {
        
        ModelAndView mav = new ModelAndView();
