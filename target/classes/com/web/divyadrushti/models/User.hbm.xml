@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!-- Generated Feb 22, 2016 5:57:08 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+
+<class
+    name="com.web.divyadrushti.models.User"
+    table="users"
+    catalog="divyadrushti"
+>
+
+	<id 
+        name="id"
+        type="java.lang.Integer"
+    >
+    
+<column name="id" />
+	    <generator class="identity">
+		</generator>
+    </id>
+
+
+
+
+    <property
+        name="name"
+	    type="string"
+    >
+<column name="name" length="64" not-null="true" />
+  </property>
+
+    <property
+        name="email"
+	    type="string"
+    >
+<column name="email" length="64" not-null="true" />
+  </property>
+
+    <property
+        name="mobileNumber"
+	    type="string"
+    >
+<column name="mobileNumber" length="13" />
+  </property>
+
+    <property
+        name="billingAddress"
+	    type="string"
+    >
+<column name="billingAddress" length="1024" />
+  </property>
+
+    <property
+        name="shippingAddress"
+	    type="string"
+    >
+<column name="shippingAddress" length="1024" />
+  </property>
+
+    <property
+        name="loginPassword"
+	    type="string"
+    >
+<column name="loginPassword" length="32" not-null="true" />
+  </property>
+
+    <property
+        name="devicePassword"
+	    type="string"
+    >
+<column name="devicePassword" length="32" />
+  </property>
+
+    <property
+        name="active"
+	    type="int"
+    >
+<column name="active" not-null="true" />
+  </property>
+
+    <property
+        name="whenCreated"
+	    type="timestamp"
+    >
+<column name="whenCreated" length="19" not-null="true" />
+  </property>
+
+    <property
+        name="whenUpdated"
+	    type="timestamp"
+    >
+<column name="whenUpdated" length="19" not-null="true" />
+  </property>
+
+    <property
+        name="tmpRoleForAuth"
+	    type="string"
+    >
+<column name="tmpRoleForAuth" length="16" not-null="true" />
+  </property>
+
+    <property
+        name="whyNotActiveId"
+	    type="java.lang.Integer"
+    >
+<column name="whyNotActiveId" />
+  </property>
+
+
+</class>
+
+</hibernate-mapping>

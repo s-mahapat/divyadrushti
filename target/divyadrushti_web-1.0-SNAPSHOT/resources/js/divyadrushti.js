@@ -26,24 +26,27 @@ ddapp.config(function ($routeProvider) {
 
 ddapp.factory('User', ['$resource', function($resource) {
         
-        // get the user from the server
-        var user = $resource('rest/user',
-        {
-                'update' : {
-                        method: 'PUT'
-                }
-	});
-	return user;
+    // get the user from the server
+    var user = $resource('rest/user',
+    {
+        'update' : {
+                method: 'PUT'
+        }
+    });
+
+    // set an app variable to be used later
+    ddapp.value('user', user);
+    return user;
 }]);
 
 ddapp.controller('HomeController', ['$scope', 'User', function($scope, $user){
         
-        var username = document.getElementById('username').innerHTML;
-        var loggedInUser = $user.get({email: username}, function(){
-            
-            // action to do on successfull user info retrival
-            $scope.user = loggedInUser;
-        });
+    var username = document.getElementById('username').innerHTML;
+    var loggedInUser = $user.get({email: username}, function(){
+
+        // action to do on successfull user info retrival
+        $scope.user = loggedInUser;
+    });
 }]);
 
 ddapp.controller('ConfigController', ['$scope', '$http',

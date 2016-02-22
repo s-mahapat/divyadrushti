@@ -26,6 +26,14 @@ and open the template in the editor.
     height: auto;
 }
 
+.dd-navbar-secondary{
+    width: 80%;
+    margin: auto;
+    display: block;
+    padding-left: 15px;
+    
+}
+
 .dd-header{
     background-color: #E6E6E6; /* #6f5499 */;
     color: #64686D;
