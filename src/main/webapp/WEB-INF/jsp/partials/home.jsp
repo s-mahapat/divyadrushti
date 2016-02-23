@@ -42,7 +42,7 @@
                 <h3 class="panel-title">Personal Information<span class="glyphicon glyphicon-cog pull-right" aria-hidden="true"></span></h3>
             </div>
             <div class="panel-body">
-                <strong>{{user.name}}</strong>
+                <strong>{{user.name}}</strong></br>
                 <span>{{user.email}}</span></br>
                 <span>{{user.mobile}}</span>
             </div>
