@@ -8,7 +8,7 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
-    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.show_sql">false</property>
     <mapping resource="com/web/divyadrushti/models/User.hbm.xml"/>
     <mapping resource="com/web/divyadrushti/models/User_Role.hbm.xml"/>
   </session-factory>

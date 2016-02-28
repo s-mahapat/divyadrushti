@@ -55,7 +55,8 @@ ddapp.controller('ConfigController', ['$scope', '$http',
         // config for cron field
         $scope.cronConfig = {
             options: {
-                allowYear : false
+                allowYear : false,
+                allowMonth: false
             }
         };
         
