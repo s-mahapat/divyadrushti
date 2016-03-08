@@ -6,7 +6,6 @@
 package com.web.divyadrushti.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,16 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
@@ -32,22 +28,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity
 @Table(name = "devices")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Devices.findAll", query = "SELECT d FROM Devices d"),
-    @NamedQuery(name = "Devices.findById", query = "SELECT d FROM Devices d WHERE d.id = :id"),
-    @NamedQuery(name = "Devices.findByMacAddress", query = "SELECT d FROM Devices d WHERE d.macAddress = :macAddress"),
-    @NamedQuery(name = "Devices.findByActive", query = "SELECT d FROM Devices d WHERE d.active = :active"),
-    @NamedQuery(name = "Devices.findByWhenCreated", query = "SELECT d FROM Devices d WHERE d.whenCreated = :whenCreated"),
-    @NamedQuery(name = "Devices.findByWhenModified", query = "SELECT d FROM Devices d WHERE d.whenModified = :whenModified"),
-    @NamedQuery(name = "Devices.findByLocation", query = "SELECT d FROM Devices d WHERE d.location = :location"),
-    @NamedQuery(name = "Devices.findByWhyNotActiveId", query = "SELECT d FROM Devices d WHERE d.whyNotActiveId = :whyNotActiveId")})
-public class Devices implements Serializable {
-
-    @OneToMany(mappedBy = "deviceId")
-    private Collection<Cron> cronCollection;
-    @OneToMany(mappedBy = "deviceId")
-    private Collection<UserDevices> userDevicesCollection;
+public class Device implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -60,39 +41,49 @@ public class Devices implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "macAddress", nullable = false, length = 32)
+    @Column(name = "macAddress", nullable = false, length = 32, unique = true)
     private String macAddress;
     
     @Basic(optional = false)
     @NotNull
     @Column(name = "active", nullable = false)
-    private int active;
+    private boolean active = true;
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "whenCreated", nullable = false)
+    @Column(name = "whenCreated")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date whenCreated;
+    private Date whenCreated = new Date();
     
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "whenModified", nullable = false)
+    @Column(name = "whenModified", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date whenModified;
+    private Date whenModified = new Date();
     
     @Size(max = 64)
-    @Column(name = "location", length = 64)
-    private String location;
+    @Column(name = "name", length = 64)
+    private String name;
     
     @Column(name = "whyNotActiveId")
     private Integer whyNotActiveId;
+    
+    // default every hour
+    @Size(min = 9, max = 9)
+    @Column(name = "cron", length = 9)
+    private String cron = "0 * * * *";
+    
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JsonIgnore(true)
+    private User userId;
 
-    public Devices(Integer id, String macAddress, int active, Date whenCreated, Date whenModified) {
-        this.id = id;
+    public Device() {
+    }
+
+    public Device(String macAddress, String name, User user) {
         this.macAddress = macAddress;
-        this.active = active;
-        this.whenCreated = whenCreated;
-        this.whenModified = whenModified;
+        this.name = name;
+        this.userId = user;
     }
 
     public Integer getId() {
@@ -101,6 +92,14 @@ public class Devices implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+    
+    public User getUser() {
+        return userId;
+    }
+
+    public void setUser(User user) {
+        this.userId = user;
     }
 
     public String getMacAddress() {
@@ -111,11 +110,11 @@ public class Devices implements Serializable {
         this.macAddress = macAddress;
     }
 
-    public int getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(int active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -135,12 +134,12 @@ public class Devices implements Serializable {
         this.whenModified = whenModified;
     }
 
-    public String getLocation() {
-        return location;
+    public String getName() {
+        return name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getWhyNotActiveId() {
@@ -149,6 +148,14 @@ public class Devices implements Serializable {
 
     public void setWhyNotActiveId(Integer whyNotActiveId) {
         this.whyNotActiveId = whyNotActiveId;
+    }
+    
+    public String getCron(){
+        return this.cron;
+    }
+    
+    public void setCron(String cron){
+        this.cron = cron;
     }
 
     @Override
@@ -161,10 +168,10 @@ public class Devices implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Devices)) {
+        if (!(object instanceof Device)) {
             return false;
         }
-        Devices other = (Devices) object;
+        Device other = (Device) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -174,26 +181,6 @@ public class Devices implements Serializable {
     @Override
     public String toString() {
         return "com.web.divyadrushti.models.Devices[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Cron> getCronCollection() {
-        return cronCollection;
-    }
-
-    public void setCronCollection(Collection<Cron> cronCollection) {
-        this.cronCollection = cronCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<UserDevices> getUserDevicesCollection() {
-        return userDevicesCollection;
-    }
-
-    public void setUserDevicesCollection(Collection<UserDevices> userDevicesCollection) {
-        this.userDevicesCollection = userDevicesCollection;
     }
     
 }

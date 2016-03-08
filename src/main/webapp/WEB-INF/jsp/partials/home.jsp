@@ -9,7 +9,7 @@
   <p>An eye to your world</p>
 </div>
 
-<div class="row" ng-controller="HomeController">
+<div class="row">
     <div class="col-lg-4">
         <div class="panel panel-default dd-tile-panel">
             <div class="panel-heading">

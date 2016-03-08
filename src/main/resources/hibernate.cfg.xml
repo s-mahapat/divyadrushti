@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -9,7 +9,8 @@
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="hibernate.show_sql">false</property>
-    <mapping resource="com/web/divyadrushti/models/User.hbm.xml"/>
-    <mapping resource="com/web/divyadrushti/models/User_Role.hbm.xml"/>
+    <mapping class="com.web.divyadrushti.models.User"></mapping>
+    <mapping class="com.web.divyadrushti.models.UserRole"></mapping>
+    <mapping class="com.web.divyadrushti.models.Device"></mapping>
   </session-factory>
 </hibernate-configuration>

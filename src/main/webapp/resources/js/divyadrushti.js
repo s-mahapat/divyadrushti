@@ -6,51 +6,82 @@
 
 var ddapp = angular.module('divyadrushti', ['ngRoute', 'ngResource', 'angular-cron-jobs']);
 
+ddapp.constant('UserInfo', function(){
+    return {username: document.getElementById('username').innerHTML,
+            id: document.getElementById('username').getAttribute('data-userid')
+        };
+});
+
 ddapp.config(function ($routeProvider) {
 
     //home
     $routeProvider.when('/', {
-        templateUrl: 'partials/home'
+        templateUrl: 'partials/home',
+        controller: 'HomeController'
     })
     .when('/home', {
-        templateUrl: 'partials/home'
+        templateUrl: 'partials/home',
+        controller: 'HomeController'
     })
     .when('/configure', {
         templateUrl: 'partials/configure',
         controller: 'ConfigController'
     })
     .otherwise({
-        templateUrl: 'partials/home'
+        templateUrl: 'partials/home',
+        controller: 'HomeController'
     });
 });
 
-ddapp.factory('User', ['$resource', function($resource) {
-        
-    // get the user from the server
-    var user = $resource('rest/user',
-    {
-        'update' : {
-                method: 'PUT'
-        }
+
+ddapp.factory('UserFactory', ['$q', '$http', 'UserInfo', function($q, $http, userinfo) {
+    
+    var deferred = $q.defer();
+    
+    $http.get('rest/user?email=' + userinfo().username)
+    .success(function(response){
+        deferred.resolve(response);
+    })
+    .error(function(response){
+        deferred.reject(response);
     });
 
-    // set an app variable to be used later
-    ddapp.value('user', user);
-    return user;
+    return deferred.promise;
+ 
 }]);
 
-ddapp.controller('HomeController', ['$scope', 'User', function($scope, $user){
+ddapp.service('UserService', function(){
+    
+    var user;
+    
+    this.setUser = function(data){
+        user = data;
         
-    var username = document.getElementById('username').innerHTML;
-    var loggedInUser = $user.get({email: username}, function(){
+    };
+    
+    this.getUser = function(){
+        console.log("Current user get" + user.name);
+        return user;
+    };
+});
 
-        // action to do on successfull user info retrival
-        $scope.user = loggedInUser;
+
+ddapp.controller('HomeController', ['$scope', 'UserFactory', 'UserService', function($scope, userf, usersvc){
+        
+    userf.then(function(data){
+        $scope.user = data;
+        usersvc.setUser(data);
     });
+    
 }]);
 
-ddapp.controller('ConfigController', ['$scope', '$http',
-    function ($scope, $http) {
+
+ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
+    function ($scope, $http, userinfo) {
+        
+        $scope.device = {};
+        
+        var user = userinfo();
         
         // config for cron field
         $scope.cronConfig = {
@@ -60,18 +91,29 @@ ddapp.controller('ConfigController', ['$scope', '$http',
             }
         };
         
-        $scope.updateFrequency = function(){
-            $http({
-                method: 'POST',
-                url: 'configure/frequency'
-            }).then(function(response) {
+        $scope.getDevices = function(){
+            $http.get('rest/user/' + user.id + '/device/list')
+            .then(function success(response){
+                $scope.devices = response.data;
+            }, function error(){
+                
+            });
+        };
+        
+        $scope.addDevice = function(){
+            $http.post('rest/user/' + user.id + '/device', $scope.device)
+            .then(function(response) {
                 // this callback will be called asynchronously
                 // when the response is available
+                $scope.getDevices();
             }, function(response) {
+                alert("Failed to save device");
               // called asynchronously if an error occurs
               // or server returns response with an error status.
             });
         };
+        
+        $scope.getDevices();
     }
 ]);
 

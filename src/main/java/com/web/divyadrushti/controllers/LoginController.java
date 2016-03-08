@@ -5,9 +5,10 @@
  */
 package com.web.divyadrushti.controllers;
 
+import com.web.divyadrushti.ManageUser;
+import com.web.divyadrushti.models.User;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,7 +57,9 @@ public class LoginController extends BaseController {
    public ModelAndView home(HttpServletRequest request, ModelAndView mav) {
 
        String name = request.getUserPrincipal().getName();
-       mav.addObject("username", name);
+       ManageUser mu = new ManageUser();
+       User user = mu.getUser(name);
+       mav.addObject("user", user);
        mav.setViewName("home");
        return mav;
    }

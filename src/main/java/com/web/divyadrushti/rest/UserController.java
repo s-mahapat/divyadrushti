@@ -5,13 +5,17 @@
  */
 package com.web.divyadrushti.rest;
 
+import com.web.divyadrushti.DAO.ManageDevice;
 import com.web.divyadrushti.ManageUser;
+import com.web.divyadrushti.models.Device;
+import com.web.divyadrushti.models.User;
+import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import com.web.divyadrushti.models.User;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
@@ -22,10 +26,48 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
     
     @RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody User GetUser(@RequestParam(value="email") String username) {
-            
+    public User GetUser(@RequestParam(value="email") String username) {
+        
+        
         ManageUser mu = new ManageUser();
         User user = mu.getUser(username);
         return user;
     }
+    
+    /**
+    * Adds a device to the database.
+     * @param userId
+     * @param device
+     * @return 
+    */
+   @RequestMapping(value = "/{userId}/device", method = RequestMethod.POST)
+   public Device addDevice(@PathVariable int userId, @RequestBody Device device) {
+       
+       ManageUser mu = new ManageUser();
+       
+       // get user object
+       User user = mu.getUser(userId);
+       
+       // set the user to whom the device belongs
+       device.setUser(user);
+       ManageDevice md = new ManageDevice();
+       
+       // add the device to the database
+       return md.addDevice(device);
+   }
+   
+   @RequestMapping(value = "/{userId}/device/list", method = RequestMethod.GET)
+   public List<Device> getDeviceList(@PathVariable int userId) {
+   
+       ManageUser mu = new ManageUser();
+       
+       // get user object
+       List<Device> devices = mu.getUserDevices(userId);
+       
+       return devices;
+       
+   }
+   
+   
+   
 }

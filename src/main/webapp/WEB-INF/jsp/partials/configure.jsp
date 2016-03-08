@@ -17,12 +17,19 @@
                             <th>Name</th>
                             <th>Mac address</th>
                             <th>Frequency</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr><td colspan="4"><span class="pull-right"><button class="btn btn-success" data-toggle="modal" data-target="#add-device-dialog">Add</button></span></td></tr>
                     </tfoot>
                     <tbody>
+                        <tr ng-repeat="userdevice in devices">
+                            <td>{{userdevice.name}}</td>
+                            <td>{{userdevice.macAddress}}</td>
+                            <td>{{userdevice.cron}}</td>
+                            <td><a href="">edit</a></td>
+                        </tr>
                     </tbody>
 
                 </table>
@@ -36,29 +43,29 @@
                         <h4 class="modal-title">Add Device</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" ng-submit="addDevice()">
                             <div class="form-group">
                                 <div class="col-lg-12">
-                                    <input type="text" class="form-control" id="deviceName" placeholder="Device Name (e.g. cam_living)">
+                                    <input type="text" class="form-control" id="deviceName" name="deviceName" ng-model="device.name" ng-required="true" placeholder="Device Name (e.g. living room)">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-12">
-                                    <input type="MAC ID" class="form-control" id="deviceMacId" placeholder="MAC ID">
+                                    <input type="text" class="form-control" id="deviceMacId" name="macAddress" ng-model="device.macAddress" ng-required="true" placeholder="MAC ID" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="cron" class="col-lg-1 control-label">Frequency</label>
                                 <div class="col-lg-offset-1 col-lg-10">
-                                    <cron-selection output="cronFrequency" config="cronConfig" id="cron"></cron-selection>
+                                    <cron-selection output="device.cron" config="cronConfig" id="cron"></cron-selection>
                                 </div>
                             </div>
-                            
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Save</button>
+                        
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

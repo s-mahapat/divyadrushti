@@ -45,7 +45,7 @@ public class Cron implements Serializable {
     private String frequency;
     @JoinColumn(name = "deviceId", referencedColumnName = "id")
     @ManyToOne
-    private Devices deviceId;
+    private Device deviceId;
 
     public Cron() {
     }
@@ -75,11 +75,11 @@ public class Cron implements Serializable {
         this.frequency = frequency;
     }
 
-    public Devices getDeviceId() {
+    public Device getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(Devices deviceId) {
+    public void setDeviceId(Device deviceId) {
         this.deviceId = deviceId;
     }
 
