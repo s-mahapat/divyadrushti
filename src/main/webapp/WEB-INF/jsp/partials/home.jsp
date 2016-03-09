@@ -17,7 +17,8 @@
             </div>
             <div class="panel-body">
                 Modify the interval at which images are captured etc...
-                <p><a class="pull-right" href="#/configure">Configure <span class="sr-only">(current)</span></a></p>
+                <p></p>
+                <a role="button" class="btn btn-xs btn-success pull-right" href="#/configure">Configure</a>
             </div>
             
         </div>
@@ -30,7 +31,8 @@
             </div>
             <div class="panel-body">
                 View captured images
-                <p><a class="pull-right" href="#/configure">View <span class="sr-only">(current)</span></a></p>
+                <p></p>
+                <a role="button" class="btn btn-xs btn-success pull-right" href="">View</a>
             </div>
             
         </div>

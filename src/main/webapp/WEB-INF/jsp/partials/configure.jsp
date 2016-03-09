@@ -5,7 +5,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <div class="panel panel-default dd-tile-panel">
             <div class="panel-heading">
                 <h3 class="panel-title">Registered Devices<span class="pull-right" aria-hidden="true"><i class="fa fa-camera"></i></span></h3>
@@ -17,17 +17,19 @@
                             <th>Name</th>
                             <th>Mac address</th>
                             <th>Frequency</th>
+                            <th>Next snap</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr><td colspan="4"><span class="pull-right"><button class="btn btn-success" data-toggle="modal" data-target="#add-device-dialog">Add</button></span></td></tr>
+                        <tr><td colspan="5"><span class="pull-right"><button class="btn btn-success" data-toggle="modal" data-target="#add-device-dialog">Add</button></span></td></tr>
                     </tfoot>
                     <tbody>
                         <tr ng-repeat="userdevice in devices">
                             <td>{{userdevice.name}}</td>
                             <td>{{userdevice.macAddress}}</td>
-                            <td>{{userdevice.cron}}</td>
+                            <td>{{prettifyCron(userdevice.cron)}}</td>
+                            <td>{{getNextCronRun(userdevice.cron)}}</td>
                             <td><a href="">edit</a></td>
                         </tr>
                     </tbody>

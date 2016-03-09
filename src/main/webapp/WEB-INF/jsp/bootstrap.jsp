@@ -16,6 +16,9 @@
 <script src="resources/js/angular-route.js"></script>
 <script src="resources/js/angular-resource.min.js"></script>
 <script src="resources/angular-cron/angular-cron-jobs.min.js"></script>
+<script src="resources/js/later.min.js"></script>
+<script src="resources/js/moment.js"></script>
+<script src="resources/js/prettycron.js"></script>
 <script src="resources/js/divyadrushti.js"></script>
 
 

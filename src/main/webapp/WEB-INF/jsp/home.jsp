@@ -30,22 +30,26 @@
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    
+
                 </div>
             </div>
         </div>
         <div class="container dd-navbar-secondary">
-                    <div class="navbar navbar-default">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="username" data-userid="${user.id}">${user.email}</span> <span class="caret"></span></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="logout">Logout</a></li>
-                              </ul>
-                            </li>
+            <div class="navbar navbar-default">
+                <a class="navbar-brand" href="#/home" title="Home"><i class="fa fa-home fa-lg"></i></a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span id="username" data-userid="${user.id}">${user.email}</span> <span class="caret"></span>
+                            <i class="fa fa-user fa-lg"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="logout">Logout</a></li>
                         </ul>
-                    </div>
-                </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="container dd-main-container" ng-view></div>
 
     </body>

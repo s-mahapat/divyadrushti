@@ -68,9 +68,9 @@ public class Device implements Serializable {
     private Integer whyNotActiveId;
     
     // default every hour
-    @Size(min = 9, max = 9)
-    @Column(name = "cron", length = 9)
-    private String cron = "0 * * * *";
+    @Size(min = 9, max = 11)
+    @Column(name = "cron", length = 11)
+    private String cron = "0 * * * * *";
     
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")

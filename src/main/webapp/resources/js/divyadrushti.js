@@ -91,6 +91,19 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
             }
         };
         
+        $scope.prettifyCron = function(cron){
+            var schedule = later.parse.cron(cron);
+            return getPrettyCron(schedule['schedules'][0]);
+        };
+        
+        $scope.getNextCronRun = function(cron){
+            
+            later.date.localTime();
+            var s = later.parse.cron(cron);
+            var mom = moment(later.schedule(s).next(1));
+            return mom.format("DD/MM/YYYY hh:mm:ss");
+        }
+        
         $scope.getDevices = function(){
             $http.get('rest/user/' + user.id + '/device/list')
             .then(function success(response){
