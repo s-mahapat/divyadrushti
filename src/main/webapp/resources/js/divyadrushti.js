@@ -80,6 +80,7 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
     function ($scope, $http, userinfo) {
 
         $scope.device = {};
+        $scope.showImages = false;
 
         var user = userinfo();
         var slides = $scope.slides = [];
@@ -136,6 +137,16 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
                 text: ['Nice image', 'Awesome photograph', 'That is so cool', 'I love that'][slides.length % 4],
                 id: currIndex++
             });
+        };
+        
+        $scope.getImagesForDevice = function(deviceId){
+            var url = 'rest/user/' + user.id + '/device/' + deviceId + '/images'; 
+            $http.get(url)
+                    .then(function success(response){
+                        $scope.showImages = true;
+                    }, function error(response){
+                        
+                    });
         };
         
         for (var i = 0; i < 4; i++) {

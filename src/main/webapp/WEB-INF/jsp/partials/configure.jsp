@@ -31,7 +31,7 @@
                             <td>{{userdevice.macAddress}}</td>
                             <td>{{prettifyCron(userdevice.cron)}}</td>
                             <td>{{getNextCronRun(userdevice.cron)}}</td>
-                            <td></td>
+                            <td><a href="" ng-click="getImagesForDevice(userdevice.id)">View</a></td>
                             <td><a href="">edit</a></td>
                         </tr>
                     </tbody>
@@ -64,6 +64,15 @@
                                     <cron-selection output="device.cron" config="cronConfig" id="cron"></cron-selection>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="enabled" id="device-enabled" ng-model="device.active"> Active
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </form>
@@ -79,15 +88,15 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row" ng-show="showImages">
     <div class="col-lg-12">
         <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
             <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
                 <img ng-src="{{slide.image}}" style="margin:auto;">
-                <div class="carousel-caption">
+                <!--<div class="carousel-caption">
                     <h4>Slide {{slide.id}}</h4>
                     <p>{{slide.text}}</p>
-                </div>
+                </div>-->
             </uib-slide>
         </uib-carousel>
     </div>
