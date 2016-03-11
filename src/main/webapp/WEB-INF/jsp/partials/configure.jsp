@@ -18,11 +18,12 @@
                             <th>Mac address</th>
                             <th>Frequency</th>
                             <th>Next snap</th>
+                            <th>Images</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr><td colspan="5"><span class="pull-right"><button class="btn btn-success" data-toggle="modal" data-target="#add-device-dialog">Add</button></span></td></tr>
+                        <tr><td colspan="6"><span class="pull-right"><button class="btn btn-success" data-toggle="modal" data-target="#add-device-dialog">Add</button></span></td></tr>
                     </tfoot>
                     <tbody>
                         <tr ng-repeat="userdevice in devices">
@@ -30,6 +31,7 @@
                             <td>{{userdevice.macAddress}}</td>
                             <td>{{prettifyCron(userdevice.cron)}}</td>
                             <td>{{getNextCronRun(userdevice.cron)}}</td>
+                            <td></td>
                             <td><a href="">edit</a></td>
                         </tr>
                     </tbody>
@@ -67,14 +69,28 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        
+
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div>
     <div class="col-lg-6">
-        
+
     </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+            <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+                <div class="carousel-caption">
+                    <h4>Slide {{slide.id}}</h4>
+                    <p>{{slide.text}}</p>
+                </div>
+            </uib-slide>
+        </uib-carousel>
+    </div>
+
 </div>
 
