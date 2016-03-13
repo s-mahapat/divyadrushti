@@ -31,7 +31,7 @@
                             <td>{{userdevice.macAddress}}</td>
                             <td>{{prettifyCron(userdevice.cron)}}</td>
                             <td>{{getNextCronRun(userdevice.cron)}}</td>
-                            <td><a href="" ng-click="getImagesForDevice(userdevice.id)">View</a></td>
+                            <td><a href="" ng-click="getImagesForDevice(userdevice.id)" class="btn btn-sm btn-success" role="button">View</a></td>
                             <td><a href="">edit</a></td>
                         </tr>
                     </tbody>
@@ -88,11 +88,11 @@
 
     </div>
 </div>
-<div class="row" ng-show="showImages">
+<div class="row">
     <div class="col-lg-12">
         <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-            <uib-slide ng-repeat="slide in slides" index="slide.id">
-                <img ng-src="{{slide.image}}" style="margin:auto;">
+            <uib-slide ng-repeat="slide in slides" index="$index">
+                <img ng-src="{{slide.image}}" class="img-responsive" style="height: 400px; margin:auto;">
                 <!--<div class="carousel-caption">
                     <h4>Slide {{slide.id}}</h4>
                     <p>{{slide.text}}</p>

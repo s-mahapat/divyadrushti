@@ -80,7 +80,6 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
     function ($scope, $http, userinfo) {
 
         $scope.device = {};
-        $scope.showImages = true;
         var user = userinfo();
         var slides = $scope.slides = [];
         var currIndex = 0;
@@ -129,9 +128,8 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
         };
 
         $scope.addSlide = function (imageUrl) {
-            console.log(imageUrl);
-            var newWidth = 600 + slides.length + 1;
-            slides.push({
+            //var newWidth = 600 + slides.length + 1;
+            $scope.slides.push({
                 image: imageUrl,
                 //image: 'http://lorempixel.com/' + newWidth + '/300',
                 //text: ['Nice image', 'Awesome photograph', 'That is so cool', 'I love that'][slides.length % 4],
@@ -142,17 +140,25 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
         $scope.getImagesForDevice = function(deviceId){
             var url = 'rest/user/' + user.id + '/device/' + deviceId + '/images';
             var userImages = [];
-            $http.get(url)
+            curreIndex = 0;
+            slides = $scope.slides = [];
+            $scope.$evalAsync(function(){
+                $http.get(url)
                     .then(function success(response){ 
                         userImages = response.data;
                         for (var i = 0; i < userImages.length; i++) {
                             $scope.addSlide(userImages[i]);
                         }
-                        $scope.showImages = true;
+                        
+                        // change the index value so tha UI is refreshed with the new set of images
+                        $scope.index = userImages.length;
                         
                     }, function error(response){
                         
                     });
+            });
+            
+            //$scope.$apply();
 
         };
         
