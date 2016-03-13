@@ -80,12 +80,10 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
     function ($scope, $http, userinfo) {
 
         $scope.device = {};
-        $scope.showImages = false;
-
+        $scope.showImages = true;
         var user = userinfo();
         var slides = $scope.slides = [];
         var currIndex = 0;
-
 
         // config for cron field
         $scope.cronConfig = {
@@ -130,28 +128,35 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
                     });
         };
 
-        $scope.addSlide = function () {
+        $scope.addSlide = function (imageUrl) {
+            console.log(imageUrl);
             var newWidth = 600 + slides.length + 1;
             slides.push({
-                image: 'http://lorempixel.com/' + newWidth + '/300',
-                text: ['Nice image', 'Awesome photograph', 'That is so cool', 'I love that'][slides.length % 4],
+                image: imageUrl,
+                //image: 'http://lorempixel.com/' + newWidth + '/300',
+                //text: ['Nice image', 'Awesome photograph', 'That is so cool', 'I love that'][slides.length % 4],
                 id: currIndex++
             });
         };
         
         $scope.getImagesForDevice = function(deviceId){
-            var url = 'rest/user/' + user.id + '/device/' + deviceId + '/images'; 
+            var url = 'rest/user/' + user.id + '/device/' + deviceId + '/images';
+            var userImages = [];
             $http.get(url)
-                    .then(function success(response){
+                    .then(function success(response){ 
+                        userImages = response.data;
+                        for (var i = 0; i < userImages.length; i++) {
+                            $scope.addSlide(userImages[i]);
+                        }
                         $scope.showImages = true;
+                        
                     }, function error(response){
                         
                     });
+
         };
         
-        for (var i = 0; i < 4; i++) {
-            $scope.addSlide();
-        }
+        
         
         $scope.getDevices();
 

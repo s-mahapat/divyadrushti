@@ -16,16 +16,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @author smahapat
  */
 @Controller
+@RequestMapping("/partials")
 public class PartialsController extends BaseController {
 
     
     /**
-    * Simply selects the home view to render by returning its name.
+    * Returns a template file from the partials folder.
      * @param view
      * @return 
     */
-   @RequestMapping(value = "/partials/{view}", method = RequestMethod.GET)
-   public ModelAndView login(@PathVariable(value = "view") String view) {
+   @RequestMapping(value = "/{view}", method = RequestMethod.GET)
+   public ModelAndView getTemplate(@PathVariable(value = "view") String view) {
        
        ModelAndView mav = new ModelAndView();
        mav.setViewName("partials/" + view);

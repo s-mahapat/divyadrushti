@@ -91,7 +91,7 @@
 <div class="row" ng-show="showImages">
     <div class="col-lg-12">
         <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-            <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+            <uib-slide ng-repeat="slide in slides" index="slide.id">
                 <img ng-src="{{slide.image}}" style="margin:auto;">
                 <!--<div class="carousel-caption">
                     <h4>Slide {{slide.id}}</h4>

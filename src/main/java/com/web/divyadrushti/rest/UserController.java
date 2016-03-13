@@ -9,7 +9,11 @@ import com.web.divyadrushti.DAO.ManageDevice;
 import com.web.divyadrushti.ManageUser;
 import com.web.divyadrushti.models.Device;
 import com.web.divyadrushti.models.User;
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +70,50 @@ public class UserController {
        
        return devices;
        
+   }
+   
+   @RequestMapping(value = "/{userId}/device/{deviceId}/images", method = RequestMethod.GET)
+   public List<String> getDeviceImages(@PathVariable int userId, @PathVariable int deviceId, HttpServletRequest request){
+       String customerImages = request.getSession().getServletContext().getRealPath("/WEB-INF/customer_images");
+       
+       String fullPath = customerImages.concat("/" + userId + "/" + deviceId);
+       File folder = new File(fullPath);
+       
+       // implement a filter to return only .jpg and .png files
+       FileFilter filter = new FileFilter() {
+           @Override
+           public boolean accept(File pathname) {
+               
+               // get the file name
+               String name = pathname.getName();
+               if(name.lastIndexOf('.') > 0)
+               {
+                  // get last index for '.' char
+                  int lastIndex = name.lastIndexOf('.');
+                  
+                  // get extension
+                  String str = name.substring(lastIndex);
+                  
+                  // match path name extension
+                  if(str.equals(".jpg"))
+                  {
+                     return true;
+                  }
+               }
+               return false;
+           }
+       };
+       
+       File[] files =  folder.listFiles(filter);
+       List<String> fileNames = new ArrayList<>();
+       
+       // form the correct path of the image
+       // customer_images/userid/deviceid/filename
+       for(File file : files){
+           fileNames.add(String.format("cimages/%s/%s/%s", userId, deviceId, file.getName()));
+       }
+       
+       return fileNames;
    }
    
    
