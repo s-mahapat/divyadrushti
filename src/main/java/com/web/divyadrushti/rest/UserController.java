@@ -6,7 +6,7 @@
 package com.web.divyadrushti.rest;
 
 import com.web.divyadrushti.DAO.ManageDevice;
-import com.web.divyadrushti.ManageUser;
+import com.web.divyadrushti.DAO.ManageUser;
 import com.web.divyadrushti.models.Device;
 import com.web.divyadrushti.models.User;
 import java.io.File;
@@ -73,7 +73,7 @@ public class UserController {
    }
    
    @RequestMapping(value = "/{userId}/device/{deviceId}/images", method = RequestMethod.GET)
-   public List<String> getDeviceImages(@PathVariable int userId, @PathVariable int deviceId, HttpServletRequest request){
+   public List<String> getUserDeviceImages(@PathVariable int userId, @PathVariable int deviceId, HttpServletRequest request){
        String customerImages = request.getSession().getServletContext().getRealPath("/WEB-INF/customer_images");
        
        String fullPath = customerImages.concat("/" + userId + "/" + deviceId);
@@ -108,12 +108,25 @@ public class UserController {
        List<String> fileNames = new ArrayList<>();
        
        // form the correct path of the image
-       // customer_images/userid/deviceid/filename
+       // cimages/userid/deviceid/filename, cimages is only for the outside world
+       // the actual location is cutomer_images
        for(File file : files){
            fileNames.add(String.format("cimages/%s/%s/%s", userId, deviceId, file.getName()));
        }
        
        return fileNames;
+   }
+   
+   @RequestMapping(value = "/device/images", method = RequestMethod.POST)
+   public String saveUserDeviceImage(@RequestParam(value="macid") String macAddress){
+       
+       ManageDevice md = new ManageDevice();
+       Device device = md.getDevice(macAddress);
+       
+       int userId = device.getUser().getId();
+       int deviceId = device.getId();
+       
+       return null;
    }
    
    

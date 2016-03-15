@@ -5,7 +5,7 @@
  */
 package com.web.divyadrushti.controllers;
 
-import com.web.divyadrushti.ManageUser;
+import com.web.divyadrushti.DAO.ManageUser;
 import com.web.divyadrushti.models.User;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;

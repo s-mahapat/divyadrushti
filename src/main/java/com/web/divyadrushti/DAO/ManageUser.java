@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.web.divyadrushti;
+package com.web.divyadrushti.DAO;
 
+import com.web.divyadrushti.HibernateUtil;
 import com.web.divyadrushti.models.Device;
 import com.web.divyadrushti.models.User;
 import java.util.ArrayList;
@@ -87,6 +88,12 @@ public class ManageUser {
         return user;
     }
     
+    /**
+    * Gets the devices that belong to an user
+    * 
+    * @param id
+    * @return User Object
+    */
     public List<Device> getUserDevices(int id){
         
         Session session = HibernateUtil.getSessionFactory().openSession();
