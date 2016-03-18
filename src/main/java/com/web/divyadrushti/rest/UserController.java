@@ -60,6 +60,27 @@ public class UserController {
        return md.addDevice(device);
    }
    
+   /**
+    * Updates a device to the database.
+     * @param userId
+     * @param device
+     * @return 
+    */
+   @RequestMapping(value = "/{userId}/device", method = RequestMethod.PUT)
+   public Device updateDevice(@PathVariable int userId, @RequestBody Device device){
+       
+       ManageUser mu = new ManageUser();
+       
+       // get user object
+       User user = mu.getUser(userId);
+       
+       // set the user to whom the device belongs
+       device.setUser(user);
+       ManageDevice md = new ManageDevice();
+       
+       return md.updateDevice(device);
+   }
+   
    @RequestMapping(value = "/{userId}/device/list", method = RequestMethod.GET)
    public List<Device> getDeviceList(@PathVariable int userId) {
    

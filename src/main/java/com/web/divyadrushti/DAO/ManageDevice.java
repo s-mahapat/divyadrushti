@@ -43,6 +43,27 @@ public class ManageDevice {
         return addedDevice;
     }
     
+    public Device updateDevice(Device device){
+        
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        Device updatedDevice = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(device);
+            tx.commit();
+            updatedDevice = device;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            log.fatal(e);
+        } finally {
+            session.close();
+        }
+        return updatedDevice;
+    }
+    
     /**
     * Gets the device details
     * 

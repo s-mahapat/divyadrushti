@@ -83,6 +83,9 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
         var user = userinfo();
         var slides = $scope.slides = [];
         var currIndex = 0;
+        
+        // let the user add the mac id of a new device
+        $scope.isMacIdReadOnly = false;
 
         // config for cron field
         $scope.cronConfig = {
@@ -114,8 +117,12 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
                     });
         };
 
-        $scope.addDevice = function () {
-            $http.post('rest/user/' + user.id + '/device', $scope.device)
+        // saves a device to database
+        $scope.saveDevice = function () {
+            
+            if($scope.device.id){
+                
+                $http.put('rest/user/' + user.id + '/device', $scope.device)
                     .then(function (response) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -125,10 +132,26 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                     });
+                
+            }else{
+                $http.post('rest/user/' + user.id + '/device', $scope.device)
+                    .then(function (response) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        $scope.getDevices();
+                    }, function (response) {
+                        alert("Failed to save device");
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            }
+            
+                    
+            
         };
 
+        // dynamically add slides to the carousel
         $scope.addSlide = function (imageUrl) {
-            //var newWidth = 600 + slides.length + 1;
             $scope.slides.push({
                 image: imageUrl,
                 //image: 'http://lorempixel.com/' + newWidth + '/300',
@@ -137,6 +160,8 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
             });
         };
         
+        // given a device id get the images for that device and user id combination
+        // from the server
         $scope.getImagesForDevice = function(deviceId){
             var url = 'rest/user/' + user.id + '/device/' + deviceId + '/images';
             var userImages = [];
@@ -157,15 +182,26 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
                         
                     });
             });
-            
-            //$scope.$apply();
 
         };
         
+        // loads a device on the pop up modal dialog
+        $scope.loadDevice = function(index){
+            
+            // based on the index load the device on the dialog
+            $scope.device = $scope.devices[index];
+            
+            // the user cannot edit the mac id once a device is added.
+            $scope.isMacIdReadOnly = true;
+        };
         
+        // update an existing device information like cron, name, active statuc etc
+        $scope.updateDevice = function(index){
+            
+        };
         
+        // get the list of user devices and display on the UI.
         $scope.getDevices();
-
 
     }
 ]);

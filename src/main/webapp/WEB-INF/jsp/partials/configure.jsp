@@ -32,7 +32,7 @@
                             <td>{{prettifyCron(userdevice.cron)}}</td>
                             <td>{{getNextCronRun(userdevice.cron)}}</td>
                             <td><a href="" ng-click="getImagesForDevice(userdevice.id)" class="btn btn-sm btn-success" role="button">View</a></td>
-                            <td><a href="">edit</a></td>
+                            <td><a href="" title="edit" data-toggle="modal" data-target="#add-device-dialog" ng-click="loadDevice($index)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
                         </tr>
                     </tbody>
 
@@ -47,7 +47,7 @@
                         <h4 class="modal-title">Add Device</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" ng-submit="addDevice()">
+                        <form class="form-horizontal" ng-submit="saveDevice()">
                             <div class="form-group">
                                 <div class="col-lg-12">
                                     <input type="text" class="form-control" id="deviceName" name="deviceName" ng-model="device.name" ng-required="true" placeholder="Device Name (e.g. living room)">
@@ -55,13 +55,13 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-12">
-                                    <input type="text" class="form-control" id="deviceMacId" name="macAddress" ng-model="device.macAddress" ng-required="true" placeholder="MAC ID" required>
+                                    <input type="text" class="form-control" id="deviceMacId" name="macAddress" ng-model="device.macAddress" ng-required="true" ng-readonly="isMacIdReadOnly" placeholder="MAC ID" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="cron" class="col-lg-1 control-label">Frequency</label>
                                 <div class="col-lg-offset-1 col-lg-10">
-                                    <cron-selection output="device.cron" config="cronConfig" id="cron"></cron-selection>
+                                    <cron-selection output="device.cron" config="cronConfig" init="device.cron" id="cron"></cron-selection>
                                 </div>
                             </div>
                             <div class="form-group">
