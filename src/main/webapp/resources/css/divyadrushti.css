@@ -14,14 +14,6 @@ and open the template in the editor.
     margin: auto;
 }
 
-.dd-navbar-brand{
-    padding-top: 0px;
-}
-
-.dd-navbar-top{
-    min-height: 105px;
-}
-
 .dd-navbar-brand img{
     display: block;
     max-width:400px;
@@ -29,14 +21,6 @@ and open the template in the editor.
     margin-top: -10px;
     width: auto;
     height: auto;
-}
-
-.dd-navbar-secondary{
-    width: 80%;
-    margin: auto;
-    display: block;
-    padding-left: 15px;
-    
 }
 
 .dd-header{
@@ -75,4 +59,8 @@ and open the template in the editor.
 
 .dd-tile-panel-brown{
     border-top-color: brown;
+}
+
+.dropdown-menu li a i{
+    margin-right: 10px;
 }

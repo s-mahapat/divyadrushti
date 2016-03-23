@@ -7,7 +7,7 @@
 var ddapp = angular.module('divyadrushti', ['ngRoute', 'ngResource', 'angular-cron-jobs', 'ui.bootstrap']);
 
 ddapp.constant('UserInfo', function () {
-    return {username: document.getElementById('username').innerHTML,
+    return {username: document.getElementById('username').getAttribute('data-username'),
         id: document.getElementById('username').getAttribute('data-userid')
     };
 });
@@ -60,7 +60,6 @@ ddapp.service('UserService', function () {
     };
 
     this.getUser = function () {
-        console.log("Current user get" + user.name);
         return user;
     };
 });
@@ -72,6 +71,26 @@ ddapp.controller('HomeController', ['$scope', 'UserFactory', 'UserService', func
             $scope.user = data;
             usersvc.setUser(data);
         });
+        
+        $scope.format = "dd/MM/yyyy";
+
+        $scope.startdtpopup = {
+            opened: false
+        };
+
+        $scope.enddtpopup = {
+            opened: false
+        };
+
+        $scope.openstartdt = function () {
+            $scope.startdtpopup.opened = true;
+            $scope.enddtpopup.opened = false;
+        };
+
+        $scope.openenddt = function () {
+            $scope.startdtpopup.opened = false;
+            $scope.enddtpopup.opened = true;
+        };
 
     }]);
 
@@ -83,7 +102,7 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
         var user = userinfo();
         var slides = $scope.slides = [];
         var currIndex = 0;
-        
+
         // let the user add the mac id of a new device
         $scope.isMacIdReadOnly = false;
 
@@ -119,35 +138,35 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
 
         // saves a device to database
         $scope.saveDevice = function () {
-            
-            if($scope.device.id){
-                
+
+            if ($scope.device.id) {
+
                 $http.put('rest/user/' + user.id + '/device', $scope.device)
-                    .then(function (response) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        $scope.getDevices();
-                    }, function (response) {
-                        alert("Failed to save device");
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                    });
-                
-            }else{
+                        .then(function (response) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            $scope.getDevices();
+                        }, function (response) {
+                            alert("Failed to save device");
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                        });
+
+            } else {
                 $http.post('rest/user/' + user.id + '/device', $scope.device)
-                    .then(function (response) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        $scope.getDevices();
-                    }, function (response) {
-                        alert("Failed to save device");
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                    });
+                        .then(function (response) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            $scope.getDevices();
+                        }, function (response) {
+                            alert("Failed to save device");
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                        });
             }
-            
-                    
-            
+
+
+
         };
 
         // dynamically add slides to the carousel
@@ -159,47 +178,47 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
                 id: currIndex++
             });
         };
-        
+
         // given a device id get the images for that device and user id combination
         // from the server
-        $scope.getImagesForDevice = function(deviceId){
+        $scope.getImagesForDevice = function (deviceId) {
             var url = 'rest/user/' + user.id + '/device/' + deviceId + '/images';
             var userImages = [];
             curreIndex = 0;
             slides = $scope.slides = [];
-            $scope.$evalAsync(function(){
+            $scope.$evalAsync(function () {
                 $http.get(url)
-                    .then(function success(response){ 
-                        userImages = response.data;
-                        for (var i = 0; i < userImages.length; i++) {
-                            $scope.addSlide(userImages[i]);
-                        }
-                        
-                        // change the index value so tha UI is refreshed with the new set of images
-                        $scope.index = userImages.length;
-                        
-                    }, function error(response){
-                        
-                    });
+                        .then(function success(response) {
+                            userImages = response.data;
+                            for (var i = 0; i < userImages.length; i++) {
+                                $scope.addSlide(userImages[i]);
+                            }
+
+                            // change the index value so tha UI is refreshed with the new set of images
+                            $scope.index = userImages.length;
+
+                        }, function error(response) {
+
+                        });
             });
 
         };
-        
+
         // loads a device on the pop up modal dialog
-        $scope.loadDevice = function(index){
-            
+        $scope.loadDevice = function (index) {
+
             // based on the index load the device on the dialog
             $scope.device = $scope.devices[index];
-            
+
             // the user cannot edit the mac id once a device is added.
             $scope.isMacIdReadOnly = true;
         };
-        
+
         // update an existing device information like cron, name, active statuc etc
-        $scope.updateDevice = function(index){
-            
+        $scope.updateDevice = function (index) {
+
         };
-        
+
         // get the list of user devices and display on the UI.
         $scope.getDevices();
 

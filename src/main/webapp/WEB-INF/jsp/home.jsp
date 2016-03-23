@@ -32,11 +32,12 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <span id="username" data-userid="${user.id}">${user.email}</span> <span class="caret"></span>
+                                <span id="username" data-userid="${user.id}" data-username="${user.email}">${user.name}</span> <span class="caret"></span>
                                 <i class="fa fa-user fa-lg"></i>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="logout">Logout</a></li>
+                                <li><a href="#/configure"><i class="fa fa-cogs"></i>Preferences</a></li>
+                                <li><a href="logout"><i class="fa fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
                     </ul>
