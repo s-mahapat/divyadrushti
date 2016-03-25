@@ -37,9 +37,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-lg-offset-1">
-                        <input type="checkbox" checked> Show recent images
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select>
+                                <option>Select Camera</option>
+                            </select>
+                        </div>
                     </div>
+                    <input type="checkbox" checked> Show recent images
                 </div>
                 <div class="dd-hr-line"></div>
                 <div class="row">
