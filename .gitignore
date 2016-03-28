@@ -39,3 +39,4 @@ Thumbs.db
 # exclude directory
 lib/
 target/
+/src/main/webapp/WEB-INF/customer_images/*.jpg
