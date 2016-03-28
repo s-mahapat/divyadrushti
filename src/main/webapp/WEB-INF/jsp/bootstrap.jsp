@@ -21,6 +21,7 @@
 <script src="resources/js/prettycron.js"></script>
 <script src="https://code.angularjs.org/1.2.16/angular-animate.min.js"></script>
 <script src="resources/js/ui-bootstrap-tpls-1.2.4.min.js"></script>
+<script src="resources/js/datetime-picker.min.js"></script>
 <script src="resources/js/divyadrushti.js"></script>
 
 

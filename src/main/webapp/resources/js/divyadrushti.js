@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var ddapp = angular.module('divyadrushti', ['ngRoute', 'ngResource', 'angular-cron-jobs', 'ui.bootstrap']);
+var ddapp = angular.module('divyadrushti', ['ngRoute', 'ngResource', 'angular-cron-jobs', 'ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 
 ddapp.constant('UserInfo', function () {
     return {username: document.getElementById('username').getAttribute('data-username'),
@@ -48,7 +48,7 @@ ddapp.factory('UserFactory', ['$q', '$http', 'UserInfo', function ($q, $http, us
 
         return deferred.promise;
 
-    }]);
+}]);
 
 ddapp.service('UserService', function () {
 
@@ -65,14 +65,65 @@ ddapp.service('UserService', function () {
 });
 
 
-ddapp.controller('HomeController', ['$scope', 'UserFactory', 'UserService', function ($scope, userf, usersvc) {
+ddapp.service('UserDeviceService', ['$q', '$http', 'UserInfo', function($q, $http, userInfo){
+   
+    
+    var user = userInfo();
+    
+    this.getDevices = function(){
+        var deferred = $q.defer();
+        $http.get('rest/user/' + user.id + '/device/list')
+        .success(function (response) {
+            deferred.resolve(response);
+        })
+        .error(function (response) {
+            deferred.reject(response);
+        });
 
+        return deferred.promise;
+    };
+
+}]);
+
+
+ddapp.controller('HomeController', ['$scope', '$http','UserFactory', 'UserService', 'UserDeviceService', 
+    function ($scope, $http, userf, usersvc, userDevicesFactory) {
+
+        $scope.selectedDevice = 0;
+        
+        // save the user data in userService
         userf.then(function (data) {
             $scope.user = data;
             usersvc.setUser(data);
         });
         
-        $scope.format = "dd/MM/yyyy";
+        // get user devices
+        userDevicesFactory.getDevices().then(function(data){
+            $scope.devices = data;
+            $scope.selectedDeviceId = $scope.devices[$scope.devices.length - 1].id;
+            
+            // get the images taken in the last 24 hrs
+            $scope.getImagesForDateRange();
+        });
+        
+        // set the start date to one day earlier date
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        $scope.startdt = yesterday;
+        $scope.enddt = new Date();
+        
+        // datepicker options
+        $scope.dateOptions = {
+            
+            // dont show week numbers
+            showWeeks: false
+        };
+        
+        // disable dates greater than today
+        $scope.disabledDates = function(date, mode) {
+            return (mode === 'day' && (date > new Date()));
+        };
 
         $scope.startdtpopup = {
             opened: false
@@ -91,6 +142,22 @@ ddapp.controller('HomeController', ['$scope', 'UserFactory', 'UserService', func
             $scope.startdtpopup.opened = false;
             $scope.enddtpopup.opened = true;
         };
+        
+        $scope.getImagesForDateRange = function(){
+            
+            var sdt = new Date($scope.startdt);
+            var edt = new Date($scope.enddt);
+            var url = 'rest/user/' + $scope.user.id + '/device/' + $scope.selectedDeviceId + '/images/' + sdt.getTime() + "/" + edt.getTime();
+            $http.get(url)
+                .then(function success(response){
+                    $scope.images = response.data;
+                }, 
+                function error(response){
+
+                });
+        };
+        
+        
 
     }]);
 
@@ -115,7 +182,8 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
         };
 
         $scope.prettifyCron = function (cron) {
-            var schedule = later.parse.cron(cron);
+            var schedule = later.parse.cron(cron, false);
+            console.log(getPrettyCron(schedule['schedules'][0]));
             return getPrettyCron(schedule['schedules'][0]);
         };
 
@@ -125,12 +193,13 @@ ddapp.controller('ConfigController', ['$scope', '$http', 'UserInfo',
             var s = later.parse.cron(cron);
             var mom = moment(later.schedule(s).next(1));
             return mom.format("DD/MM/YYYY hh:mm:ss");
-        }
+        };
 
         $scope.getDevices = function () {
             $http.get('rest/user/' + user.id + '/device/list')
                     .then(function success(response) {
                         $scope.devices = response.data;
+                        console.log($scope.devices);
                     }, function error() {
 
                     });
